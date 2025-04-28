@@ -1,23 +1,21 @@
-            <?php
-           #$select categories
-            $stmt = $db->prepare( "SELECT * FROM categories");
-             $stmt->execute();
-           $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
-        //    print_r($categories[0]->name);
-         
+       <?php
+     $stmt = $db->prepare("SELECT * FROM users");
+     $stmt->execute();
+     $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+  
 
-        #delete category
-      if(isset($_POST['categoryDeleteBtn'])) {
-        $categoryId = $_POST['category_id'];
-       
-        $stmt = $db->prepare("DELETE FROM  categories WHERE id=$categoryId");
-        $stmt->execute();
-        echo " <script>sweetalert('deleted a category', 'Categories')</script>";
-        
-        
-      }
+     if(isset($_POST['userDeleteBtn'])) {
+       $user_Id = $_POST['user_id'];
+       $stmt = $db->prepare("DELETE FROM users Where id=$user_Id");
+       $result=  $stmt->execute();
 
-            ?>
+ if($result) {
+    echo "<script>location.href='index.php?page=users'</script>";
+ }
+
+     }
+
+          ?>
             <div class="container-fluid">
 
                                 <!-- Page Heading -->
@@ -31,8 +29,9 @@
         
                                 <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Category List</h6>
-                            <a href="index.php?page=Categories-create" class="btn btn-primary btn-sm "> <i class="fas fa-plus"></i> Add New</a>
+                            <h6 class="m-0 font-weight-bold text-primary">User List</h6>
+                            <a href="index.php?page=users-create" class="btn btn-primary btn-sm "> <i class="fa fa-plus" aria-hidden="true"></i>
+                            Add New</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -41,28 +40,32 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Action </th>
+                                            <th>Role</th>
+                                            <th>Email</th>
+                                            <th>Actions</th>
                                             
                                         </tr>
                                     </thead>
                                  
                                     <tbody>
                                     <?php
-                                   foreach($categories as $category):
+                                   foreach($users as $user):
                                    ?>
                                     <tr>
-                                    <td><?php echo $category->id ?></td>
-                                    <td><?php echo $category->name ?></td>
+                                    <td><?php echo $user->id ?></td>
+                                    <td><?php echo $user->name ?></td>
+                                   <td><?php echo $user->email?></td>
+                                    <td><?php echo $user->role ?></td>
+                              
+                                    
+            
                                     <td>
 
                                     
                                     <form method="post" >
-                                        <input type="hidden" name="category_id" value="<?php echo $category->id ?>">
-                                    <a href="index.php?page=Categories-edit&category_id=<?php echo $category->id ?>" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-edit"></i>
-
-                                    </a>
-                                    <button name="categoryDeleteBtn" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                        <input type="hidden" name="user_id" value="<?php echo $user->id ?>">
+                                    <a href="index.php?page=users-edit&user_id=<?php echo $user->id ?>" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                    <button name="userDeleteBtn" class="btn btn-danger btn-sm" onclick="return confirm('are you sure to delete?')"><i class="fas fa-trash"></i></button>
                                     </form>
                                     </td>
                                     
